@@ -22,7 +22,7 @@ class Mydata(Dataset):
         return self.others[idx], self.life[idx]
 
 def get_life_expectance_data(batchsize = 32):
-    pd_data = pd.read_csv("/home/wenhao/python/torch/data/Life_Expectancy.csv")
+    pd_data = pd.read_csv("/home/wenhao/python/torch-examples/data/Life_Expectancy.csv")
     pd_data.drop("Year", axis = 1, inplace = True)
     pd_data.drop("Country", axis = 1, inplace = True)
     pd_data.drop("Status", axis = 1, inplace = True)

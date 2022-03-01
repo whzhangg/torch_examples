@@ -75,26 +75,39 @@ def main():
         "depth": tune.choice([3,4,5]),
         "lr": tune.choice([1e-5, 1e-4, 1e-3, 1e-2, 1e-1]),
         "batchsize": tune.choice([8, 16, 32]),
-        "circle": tune.choice([50, 100, 150])
+        "circle": 100
     }
 
-    scheduler = ASHAScheduler(
+    scheduler_median = tune.schedulers.MedianStoppingRule(
                     metric="loss",
                     mode="min",
-                    max_t=150,
-                    grace_period=30
-                )
-                
+                    min_samples_required = 8,
+                    grace_period=10
+    )
 
+    scheduler_PBT = tune.schedulers.PopulationBasedTraining(
+                    metric='loss',
+                    mode='min',
+                    perturbation_interval=5,
+                    hyperparam_mutations={
+                        "nhidden": tune.choice([10, 20, 30, 40]),
+                        "depth": tune.choice([3,4,5]),
+                        "lr": tune.choice([1e-5, 1e-4, 1e-3, 1e-2, 1e-1]),
+                        "batchsize": tune.choice([8, 16, 32]),
+                    }
+    )
+                
     result = tune.run(
         train_ray,
         resources_per_trial={"cpu": 1},
         config=config,
-        num_samples=20,
-        scheduler=scheduler,
-        local_dir = 'ray',
+        num_samples=8,
+        scheduler=scheduler_PBT,
+        local_dir = 'ray_life',
         name = 'life_exp'
     )
+
+
 
     best_trial = result.get_best_trial("loss", "min", "last")
     print("Best trial config: {}".format(best_trial.config))

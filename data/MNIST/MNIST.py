@@ -1,3 +1,4 @@
+# this is the example from torch
 from __future__ import print_function
 import argparse
 import torch
@@ -19,26 +20,18 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(128, 10)
 
     def forward(self, x):
-        print(x.shape)
         x = self.conv1(x)
         x = F.relu(x)
-        print(x.shape)
         x = self.conv2(x)
         x = F.relu(x)
-        print(x.shape)
         x = F.max_pool2d(x, 2)
-        print(x.shape)
         x = self.dropout1(x)
         x = torch.flatten(x, 1)
-        print(x.shape)
         x = self.fc1(x)
         x = F.relu(x)
         x = self.dropout2(x)
-        print(x.shape)
         x = self.fc2(x)
-        print(x.shape)
         output = F.log_softmax(x, dim=1)
-        raise
         return output
 
 
@@ -121,9 +114,9 @@ def main():
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
         ])
-    dataset1 = datasets.MNIST('data', train=True,
+    dataset1 = datasets.MNIST('..', train=True,
                        transform=transform)
-    dataset2 = datasets.MNIST('data', train=False,
+    dataset2 = datasets.MNIST('..', train=False,
                        transform=transform)
     train_loader = torch.utils.data.DataLoader(dataset1,**train_kwargs)
     test_loader = torch.utils.data.DataLoader(dataset2, **test_kwargs)

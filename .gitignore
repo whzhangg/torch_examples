@@ -1,2 +1,4 @@
 /data/MNIST/raw/*-ubyte
 /__pycache__/
+ray_mnist
+ray_life

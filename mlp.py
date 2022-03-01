@@ -55,7 +55,7 @@ class ConvNet(nn.Module):
     output_size   = 10
 
     def __init__(self, 
-        nconvolution: int = 1,
+        nconvolution: int = 2,
         initial_channel: int = 32,
         dropout1: float = 0.25,
         dropout2: float = 0.5,
